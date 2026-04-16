@@ -15,16 +15,13 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/films', [FilmController::class, 'index'])->name('film.index');
-    Route::get('/films/create', [FilmController::class, 'create'])->name('film.create');
-    Route::post('/films', [FilmController::class, 'store'])->name('film.store');
-    Route::get('/films/{film}/edit', [FilmController::class, 'edit'])->name('film.edit');
-    Route::put('/films/{film}', [FilmController::class, 'update'])->name('film.update');
 
     Route::get('/locations', [LocationController::class, 'index'])->name('location.index');
     Route::get('/locations/create', [LocationController::class, 'create'])->name('location.create');
     Route::post('/locations', [LocationController::class, 'store'])->name('location.store');
     Route::get('/locations/{location}/edit', [LocationController::class, 'edit'])->name('location.edit');
     Route::put('/locations/{location}', [LocationController::class, 'update'])->name('location.update');
+    Route::delete('/locations/{location}', [LocationController::class, 'destroy'])->name('location.destroy');
 
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -32,10 +29,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-    Route::middleware(['admin'])->group(function () {
-        Route::delete('/films/{film}', [FilmController::class, 'destroy'])->name('film.destroy');
-        Route::delete('/locations/{location}', [LocationController::class, 'destroy'])->name('location.destroy');
-
-    });
+Route::middleware([\App\Http\Middleware\AdminMiddleware::class])->group(function () {
+    Route::get('/films/create', [FilmController::class, 'create'])->name('film.create');
+    Route::post('/films', [FilmController::class, 'store'])->name('film.store');
+    Route::get('/films/{film}/edit', [FilmController::class, 'edit'])->name('film.edit');
+    Route::put('/films/{film}', [FilmController::class, 'update'])->name('film.update');
+    Route::delete('/films/{film}', [FilmController::class, 'destroy'])->name('film.destroy');
+});
 
 require __DIR__.'/auth.php';

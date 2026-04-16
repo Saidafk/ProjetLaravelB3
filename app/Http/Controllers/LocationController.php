@@ -47,6 +47,10 @@ class LocationController extends Controller
 
     public function edit(Location $location): View
     {
+        if (Auth::id() !== $location->user_id && !Auth::user()->is_admin) {
+            abort(403);
+        }
+
         $films = Film::all();
         $users = User::all();
         return view('location.edit', compact('location', 'films', 'users'));
@@ -56,12 +60,15 @@ class LocationController extends Controller
     {
         $request->validate([
             'film_id' => 'required|integer|exists:films,id',
-            'user_id' => 'required|integer|exists:users,id',
             'name' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'country' => 'required|string|max:255',
             'description' => 'required|string|max:255',
         ]);
+
+        if (Auth::id() !== $location->user_id && !Auth::user()->is_admin) {
+            abort(403);
+        }
 
         $location->update($request->all());
         return redirect()->route('location.index')->with('success', 'La location a été mise à jour avec succès.');
@@ -69,6 +76,10 @@ class LocationController extends Controller
 
     public function destroy(Location $location): RedirectResponse
     {
+        if (Auth::id() !== $location->user_id && !Auth::user()->is_admin) {
+            abort(403);
+        }
+
         $location->delete();
 
         return redirect()->route('location.index')->with('success', 'La location a été supprimée avec succès.');

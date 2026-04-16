@@ -20,5 +20,4 @@
 
     <a href="{{ route('film.create') }}" class="text-green-600">Ajouter</a>
 
-
 </x-app-layout>

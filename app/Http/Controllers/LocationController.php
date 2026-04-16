@@ -55,7 +55,6 @@ class LocationController extends Controller
             return redirect()->back()->with('error', 'Vous devez être connecté.');
         }
 
-        // try insert, unique constraint prevents duplicates
         try {
             DB::table('location_votes')->insert([
                 'user_id' => $userId,

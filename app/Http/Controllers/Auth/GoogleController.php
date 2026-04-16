@@ -30,12 +30,10 @@ class GoogleController extends Controller
                         ->first();
 
             if ($user) {
-                // S'il s'est inscrit sans Google au départ, on lui associe son ID
                 if (! $user->google_id) {
                     $user->update(['google_id' => $googleUser->getId()]);
                 }
             } else {
-                // Créer un nouvel utilisateur avec les infos Google
                 $user = User::create([
                     'name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),

@@ -12,81 +12,37 @@ CineMap est une application Laravel permettant de gérer des lieux de tournage a
 
 ### Étapes d'installation
 1. **Cloner le projet**
-   ```bash
-   git clone <url-du-repo>
-   cd ProjetLaravelB3
-   ```
-
-2. **Installer les dépendances PHP et JS**
-   ```bash
-   composer install
-   npm install
-   npm run build
-   ```
-
-3. **Configuration de l'environnement**
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
-   *Note : Configurez votre base de données dans le fichier `.env`.*
-
-4. **Migrations et Seeders**
-   ```bash
-   php artisan migrate:fresh --seed
-   ```
-
-5. **Lancer le serveur**
-   ```bash
-   php artisan serve
-   ```
+2. **Installer les dépendances** : `composer install` && `npm install`
+3. **Environnement** : `cp .env.example .env` && `php artisan key:generate`
+4. **Base de données** : `php artisan migrate:fresh --seed`
+5. **Lancer le serveur** : `composer run dev`
 
 ---
 
-## 🛠 Fonctionnalités implémentées (Étapes 1 à 5)
+## 🛠 Fonctionnalités implémentées (Étapes 1 à 7)
 
-### 1. Authentification
-- Système d'inscription, connexion et déconnexion.
-- Accès restreint aux utilisateurs connectés pour la consultation des films et localisations.
+### ✅ Étape 1 à 5 : Socle, CRUDs, Admin, Jobs & Commandes
+- **Auth & CRUDs** : Système complet pour Films et Locations.
+- **Middleware Admin** : Protection des routes sensibles.
+- **Jobs** : Recalcul asynchrone des upvotes.
+- **Artisan** : Nettoyage automatique des lieux inactifs (`php artisan app:prune-inactive-locations`).
 
-### 2. CRUDs Métier
-- **Films** : Liste, création, modification et suppression.
-- **Locations** : Liste, création (avec choix du film), modification et suppression.
-- *Note : Un emplacement est automatiquement rattaché à l'utilisateur qui le crée.*
+### ✅ Étape 6 : Qualité de code (Laravel Pint)
+Le projet utilise **Laravel Pint** pour garantir un style de code propre et cohérent.
+- **Lancer le linter** : `./vendor/bin/pint`
 
-### 3. Gestion des Droits (Middleware Admin)
-- Un **Administrateur** (`is_admin = true`) peut modifier/supprimer tous les films et toutes les localisations.
-- Un **Utilisateur standard** peut créer des localisations, mais ne peut modifier ou supprimer que ses propres créations.
-
-### 4. Système de Votes (Queues & Jobs)
-- Un utilisateur peut "Upvoter" un emplacement de tournage (limité à un vote par utilisateur par lieu).
-- Le calcul du nombre total de votes est délégué à un **Job mis en file d'attente** (`RecalculateLocationUpvotes`).
-
-**Pour tester les votes (Queue worker) :**
-```bash
-php artisan queue:work
-```
-
-### 5. Nettoyage Automatique (Commande Artisan)
-- Commande personnalisée pour supprimer les lieux "inactifs".
-- **Règle** : Supprime les emplacements créés il y a plus de 14 jours ayant moins de 2 upvotes.
-
-**Pour tester la commande manuellement :**
-```bash
-php artisan app:prune-inactive-locations
-```
-*La commande est planifiée pour s'exécuter quotidiennement à 03:00.*
+### ✅ Étape 7 : Login Social (Google OAuth)
+Connexion rapide via Google Socialite.
+- **Configuration** : Remplir `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` et `GOOGLE_REDIRECT_URI` dans le `.env`.
+- **Accès** : Bouton disponible sur la page de connexion.
 
 ---
 
-## 📈 Roadmap (Étapes suivantes)
-- [ ] **Étape 6** : Intégration de Laravel Pint pour le formatage du code.
-- [ ] **Étape 7** : Connexion via Socialite (OAuth).
+## 📈 Roadmap (Dernière ligne droite)
 - [ ] **Étape 8** : Système d'abonnement Stripe et API JSON (JWT).
 - [ ] **Étape 9** : Serveur MCP pour intégration IA.
 
 ---
 
-## 💻 Commandes utiles
-- **Pint (Linting)** : `./vendor/bin/pint`
-- **Tests** : `php artisan test`
+## 📖 Documentation détaillée
+Consultez le fichier [IMPLEMENTATION.md](./IMPLEMENTATION.md) pour retrouver l'emplacement exact du code et les détails techniques de chaque étape.

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('city');
             $table->string('country');
             $table->string('description');
-            $table->integer('upvotes_count')->default(0);    
+            $table->integer('upvotes_count')->default(0);
             $table->timestamps();
         });
     }

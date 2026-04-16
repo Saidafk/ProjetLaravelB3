@@ -2,16 +2,16 @@
 
 namespace Database\Factories;
 
+use App\Models\Film;
 use App\Models\Location;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Location>
  */
 class LocationFactory extends Factory
 {
-
     /**
      * Define the model's default state.
      *
@@ -21,8 +21,8 @@ class LocationFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'film_id' => \App\Models\Film::factory(),
-            'user_id' => \App\Models\User::factory(),
+            'film_id' => Film::factory(),
+            'user_id' => User::factory(),
             'city' => fake()->city(),
             'country' => fake()->country(),
             'description' => fake()->paragraph(),

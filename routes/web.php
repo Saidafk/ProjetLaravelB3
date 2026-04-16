@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,13 +25,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/locations/{location}', [LocationController::class, 'update'])->name('location.update');
     Route::delete('/locations/{location}', [LocationController::class, 'destroy'])->name('location.destroy');
 
-    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware([\App\Http\Middleware\AdminMiddleware::class])->group(function () {
+Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('/films/create', [FilmController::class, 'create'])->name('film.create');
     Route::post('/films', [FilmController::class, 'store'])->name('film.store');
     Route::get('/films/{film}/edit', [FilmController::class, 'edit'])->name('film.edit');

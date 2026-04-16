@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\RecalculateLocationUpvotes;
+use App\Models\Film;
 use App\Models\Location;
+use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
-use App\Models\Film;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use App\Jobs\RecalculateLocationUpvotes;
+use Illuminate\View\View;
 
 class LocationController extends Controller
 {
-
     public function index()
     {
         $locations = Location::all();
+
         return view('location.index', compact('locations'));
     }
 
     public function create()
     {
         $films = Film::all();
-        $users = User::all();
-        return view('location.create', compact('films', 'users'));
+
+        return view('location.create', compact('films'));
     }
 
     public function store(Request $request)
@@ -63,7 +63,7 @@ class LocationController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             return redirect()->back()->with('info', 'Vous avez déjà voté.');
         }
 
@@ -74,13 +74,13 @@ class LocationController extends Controller
 
     public function edit(Location $location): View
     {
-        if (Auth::id() !== $location->user_id && !Auth::user()->is_admin) {
+        if (Auth::id() !== $location->user_id && ! Auth::user()->is_admin) {
             abort(403);
         }
 
         $films = Film::all();
-        $users = User::all();
-        return view('location.edit', compact('location', 'films', 'users'));
+
+        return view('location.edit', compact('location', 'films'));
     }
 
     public function update(Request $request, Location $location): RedirectResponse
@@ -93,17 +93,18 @@ class LocationController extends Controller
             'description' => 'required|string|max:255',
         ]);
 
-        if (Auth::id() !== $location->user_id && !Auth::user()->is_admin) {
+        if (Auth::id() !== $location->user_id && ! Auth::user()->is_admin) {
             abort(403);
         }
 
         $location->update($request->all());
+
         return redirect()->route('location.index')->with('success', 'La location a été mise à jour avec succès.');
     }
 
     public function destroy(Location $location): RedirectResponse
     {
-        if (Auth::id() !== $location->user_id && !Auth::user()->is_admin) {
+        if (Auth::id() !== $location->user_id && ! Auth::user()->is_admin) {
             abort(403);
         }
 

@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 
 class FilmController extends Controller
 {
-
     public function index()
     {
         $films = Film::all();
+
         return view('film.index', compact('films'));
     }
 
@@ -28,10 +28,11 @@ class FilmController extends Controller
         ]);
 
         Film::create($request->all());
+
         return redirect()->route('film.index')->with('success', 'Film créé !');
     }
 
-    function edit(Film $film)
+    public function edit(Film $film)
     {
         return view('film.edit', compact('film'));
     }
@@ -45,12 +46,14 @@ class FilmController extends Controller
         ]);
 
         $film->update($request->all());
+
         return redirect()->route('film.index')->with('success', 'Film mis à jour !');
     }
 
     public function destroy(Film $film)
     {
         $film->delete();
+
         return redirect()->route('film.index')->with('success', 'Film supprimé !');
     }
 }

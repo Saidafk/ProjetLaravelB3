@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Location;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -15,7 +16,7 @@ class PruneInactiveLocations extends Command
      */
     public function handle()
     {
-        $count = \App\Models\Location::where('created_at', '<=', now()->subDays(14))
+        $count = Location::where('created_at', '<=', now()->subDays(14))
             ->where('upvotes_count', '<', 2)
             ->delete();
 

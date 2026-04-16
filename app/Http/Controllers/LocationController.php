@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Film;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use App\Jobs\RecalculateLocationUpvotes;
 
 class LocationController extends Controller
 {
@@ -43,6 +45,31 @@ class LocationController extends Controller
         Location::create($request->all());
 
         return redirect()->route('location.index')->with('success', 'La location a été créée avec succès.');
+    }
+
+    public function upvote(Location $location)
+    {
+        $userId = Auth::id();
+
+        if (! $userId) {
+            return redirect()->back()->with('error', 'Vous devez être connecté.');
+        }
+
+        // try insert, unique constraint prevents duplicates
+        try {
+            DB::table('location_votes')->insert([
+                'user_id' => $userId,
+                'location_id' => $location->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->back()->with('info', 'Vous avez déjà voté.');
+        }
+
+        RecalculateLocationUpvotes::dispatch($location);
+
+        return redirect()->back()->with('success', 'Merci pour votre vote.');
     }
 
     public function edit(Location $location): View

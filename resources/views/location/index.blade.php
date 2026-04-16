@@ -16,20 +16,23 @@
                     <div class="text-xs text-gray-500">Upvotes : {{ $location->upvotes_count }}</div>
                 </div>
 
-                @if (Auth::check() && (Auth::id() === $location->user_id || Auth::user()->is_admin))
+                <div class="mt-2">
+                    <form action="{{ route('location.upvote', $location) }}" method="POST" class="inline mr-4">
+                        @csrf
+                        <button type="submit" class="text-green-600">Upvote</button>
+                    </form>
+
+                    @if (Auth::id() === $location->user_id || auth()->user()->is_admin)
                     <div class="mt-2">
                         <form action="{{ route('location.destroy', $location) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
-                            @if (Auth::id() === $location->user_id || Auth::user()->is_admin)
-                                <a href="{{ route('location.edit', $location) }}" class="text-blue-600 mr-2">Modifier</a>
-                            @endif
-                            @if (Auth::id() === $location->user_id || Auth::user()->is_admin)
-                                <button type="submit" class="text-red-600">Supprimer</button>
-                            @endif
+                            <a href="{{ route('location.edit', $location) }}" class="text-blue-600 mr-2">Modifier</a>
+                            <button type="submit" class="text-red-600">Supprimer</button>
                         </form>
                     </div>
-                @endif
+                    @endif
+                </div>
             </li>
         @endforeach
     </ul>

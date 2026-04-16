@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/locations', [LocationController::class, 'index'])->name('location.index');
     Route::get('/locations/create', [LocationController::class, 'create'])->name('location.create');
     Route::post('/locations', [LocationController::class, 'store'])->name('location.store');
+    Route::post('/locations/{location}/upvote', [LocationController::class, 'upvote'])->name('location.upvote');
     Route::get('/locations/{location}/edit', [LocationController::class, 'edit'])->name('location.edit');
     Route::put('/locations/{location}', [LocationController::class, 'update'])->name('location.update');
     Route::delete('/locations/{location}', [LocationController::class, 'destroy'])->name('location.destroy');

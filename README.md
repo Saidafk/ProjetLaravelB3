@@ -31,15 +31,15 @@ CineMap est une application Laravel permettant de gérer des lieux de tournage a
 Le projet utilise **Laravel Pint** pour garantir un style de code propre et cohérent.
 - **Lancer le linter** : `./vendor/bin/pint`
 
-### ✅ Étape 7 : Login Social (Google OAuth)
-Connexion rapide via Google Socialite.
-- **Configuration** : Remplir `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` et `GOOGLE_REDIRECT_URI` dans le `.env`.
-- **Accès** : Bouton disponible sur la page de connexion.
+### ✅ Étape 8 : Abonnement Stripe & API JWT
+Seuls les utilisateurs Premium peuvent accéder aux données via l'API.
+- **Paiement** : Intégration de Stripe Checkout.
+- **Sécurité** : Authentification de l'API via tokens JWT.
+- **Accès** : Middleware dédié pour vérifier l'abonnement actif.
 
 ---
 
-## 📈 Roadmap (Dernière ligne droite)
-- [ ] **Étape 8** : Système d'abonnement Stripe et API JSON (JWT).
+## 📈 Roadmap (Dernière étape)
 - [ ] **Étape 9** : Serveur MCP pour intégration IA.
 
 ---

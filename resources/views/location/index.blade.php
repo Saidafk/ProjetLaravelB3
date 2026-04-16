@@ -14,6 +14,7 @@
                     <div class="text-sm text-gray-600">{{ $location->city }} — {{ $location->country }}</div>
                     <div class="text-sm">{{ $location->description }}</div>
                     <div class="text-xs text-gray-500">Upvotes : {{ $location->upvotes_count }}</div>
+                    <div class="text-xs text-gray-500">Creer le : {{ $location->created_at }}</div>
                 </div>
 
                 <div class="mt-2">

@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Location;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
-class LocationSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     use WithoutModelEvents;
 
@@ -15,6 +16,8 @@ class LocationSeeder extends Seeder
      */
     public function run(): void
     {
-        Location::factory(10)->create();
+        // User::factory(10)->create();
+
+        User::factory(10)->create();
     }
 }

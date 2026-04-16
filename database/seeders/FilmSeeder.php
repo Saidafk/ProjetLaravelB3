@@ -15,12 +15,6 @@ class FilmSeeder extends Seeder
      */
     public function run(): void
     {
-        // Film::factory(10)->create();
-
-        Film::factory(10)->create([
-            'title' => 'Test Film',
-            'release_year' => 2023,
-            'synopsis' => 'This is a test film.',
-        ]);
+        Film::factory(10)->create();
     }
 }

@@ -21,6 +21,8 @@ class LocationFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'film_id' => \App\Models\Film::factory(),
+            'user_id' => \App\Models\User::factory(),
             'city' => fake()->city(),
             'country' => fake()->country(),
             'description' => fake()->paragraph(),

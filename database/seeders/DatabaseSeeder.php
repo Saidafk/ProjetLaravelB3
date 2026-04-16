@@ -21,11 +21,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Saïd',
             'email' => 'said@example.com',
             'password' => Hash::make('password'),
+            'is_admin' => true,
         ]);
 
         $this->call([
             FilmSeeder::class,
             LocationSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

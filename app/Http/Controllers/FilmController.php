@@ -56,4 +56,13 @@ class FilmController extends Controller
 
         return redirect()->route('film.index')->with('success', 'Film supprimé !');
     }
+
+    public function locations(Film $film)
+    {
+        return response()->json([
+            'film' => $film->title,
+            'synopsis' => $film->synopsis,
+            'locations' => $film->locations()->withCount('upvotes')->get(),
+        ]);
+    }
 }

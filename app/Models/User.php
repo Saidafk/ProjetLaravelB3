@@ -17,10 +17,10 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements JWTSubject
 {
+    use Billable;
+
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
-
-    use Billable;
 
     /**
      * Get the locations for the user.
@@ -43,6 +43,13 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    public function getJWTIdentifier() { return $this->getKey(); }
-    public function getJWTCustomClaims() { return []; }
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }

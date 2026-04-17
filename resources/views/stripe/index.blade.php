@@ -1,17 +1,25 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Abonnement Premium</h2>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Abonnement Premium') }}
+        </h2>
     </x-slot>
 
-    <div class="py-12 text-center">
         @if(auth()->user()->subscribed('default'))
-            <p class="text-green-600 font-bold text-xl">Vous êtes actuellement abonné !</p>
+            <p class="text-green-600 font-bold text-xl mb-4">Vous êtes actuellement abonné !</p>
+            <form action="{{ route('stripe.unsubscribe') }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit">
+                    Se désabonner
+                </button>
+            </form>
         @else
             <p class="mb-4">Accédez à l'API exclusive en vous abonnant.</p>
             <form action="{{ route('stripe.subscribe') }}" method="POST">
                 @csrf
-                <x-primary-button>S'abonner (9.99€/mois)</x-primary-button>
+                <button>S'abonner (9.99€/mois)</button>
             </form>
         @endif
-    </div>
+
 </x-app-layout>

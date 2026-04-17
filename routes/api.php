@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\FilmController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::post('/login', [StripeController::class, 'login']);
+
+Route::middleware('api')->group(function () {
+    Route::get('/films/{film}/locations', [FilmController::class, 'locations']);
+});

@@ -153,10 +153,37 @@ Route::get('/films/{film}/locations', function (Film $film) {
 
 ---
 
-## 🧪 4. Comment tester ?
+## 🔗 4. Webhook Stripe (OBLIGATOIRE en local)
 
-1.  **Paiement** : Va sur `/stripe`, clique sur le bouton, paie avec la carte de test `4242...`.
-2.  **Obtenir le Token** : Utilise Postman (ou `curl`) sur `POST /api/login` avec ton email et mot de passe. Récupère le `token`.
-3.  **Appel API** : Utilise Postman sur `GET /api/films/1/locations`. 
+Sans webhook, Stripe ne peut pas notifier ton app que le paiement est réussi.
+Résultat : `subscribed('default')` retourne toujours `false` même après paiement.
+
+### Ouvrir un terminal dédié et lancer :
+```powershell
+# Depuis C:\users\SaïdKHEIAR (là où se trouve stripe.exe)
+
+# Étape 1 : Se connecter à Stripe
+.\stripe login
+
+# Étape 2 : Forwarder les webhooks vers l'app locale (garder ce terminal ouvert !)
+.\stripe listen --forward-to http://127.0.0.1:8000/stripe/webhook
+```
+
+### Copier le secret affiché dans le `.env` :
+```env
+STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxx
+```
+
+> ⚠️ Ce terminal doit rester ouvert pendant tout le test. Refais un paiement ensuite.
+
+---
+
+## 🧪 5. Comment tester ?
+
+1.  **Webhook actif** : Lance `.\stripe listen` dans un terminal séparé (voir section 4).
+2.  **Paiement** : Va sur `/stripe`, clique sur le bouton, paie avec la carte de test `4242 4242 4242 4242`.
+3.  **Vérifier l'abonnement** : Retourne sur `/stripe` → tu dois voir "Vous êtes actuellement abonné !".
+4.  **Obtenir le Token JWT** : Utilise Postman sur `POST /api/login` avec ton email et mot de passe. Récupère le `token`.
+5.  **Appel API protégé** : Utilise Postman sur `GET /api/films/1/locations`.
     - Ajoute un Header : `Authorization: Bearer <TON_TOKEN>`.
-    - Si tu es abonné, tu vois le JSON. Sinon, tu reçois une erreur 403.
+    - Si tu es abonné → tu vois le JSON. Sinon → erreur 403.

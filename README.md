@@ -19,7 +19,7 @@ CineMap est une application Laravel permettant de gérer des lieux de tournage a
 
 ---
 
-## 🛠 Fonctionnalités implémentées (Étapes 1 à 7)
+## 🛠 Fonctionnalités implémentées (Étapes 1 à 8)
 
 ### ✅ Étape 1 à 5 : Socle, CRUDs, Admin, Jobs & Commandes
 - **Auth & CRUDs** : Système complet pour Films et Locations.
@@ -29,7 +29,9 @@ CineMap est une application Laravel permettant de gérer des lieux de tournage a
 
 ### ✅ Étape 6 : Qualité de code (Laravel Pint)
 Le projet utilise **Laravel Pint** pour garantir un style de code propre et cohérent.
-- **Lancer le linter** : `./vendor/bin/pint`
+
+### ✅ Étape 7 : Connexion via Google (Socialite)
+- **Social Auth** : Connexion rapide via Google Socialite.
 
 ### ✅ Étape 8 : Abonnement Stripe & API JWT
 Seuls les utilisateurs Premium peuvent accéder aux données via l'API.

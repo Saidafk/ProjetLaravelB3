@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Saïd Kheiar (Test)',
             'email' => 'skheiar670@gmail.com',
             'password' => Hash::make('password123'),
-            'google_id' => null, 
+            'google_id' => null,
         ]);
 
         $this->call([

@@ -26,8 +26,8 @@ class GoogleController extends Controller
             $googleUser = Socialite::driver('google')->user();
 
             $user = User::where('google_id', $googleUser->getId())
-                        ->orWhere('email', $googleUser->getEmail())
-                        ->first();
+                ->orWhere('email', $googleUser->getEmail())
+                ->first();
 
             if ($user) {
                 if (! $user->google_id) {
@@ -38,7 +38,7 @@ class GoogleController extends Controller
                     'name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
                     'google_id' => $googleUser->getId(),
-                    'password' => null, 
+                    'password' => null,
                 ]);
             }
 
@@ -47,7 +47,7 @@ class GoogleController extends Controller
             return redirect()->intended(route('dashboard', absolute: false));
 
         } catch (\Exception $e) {
-            return redirect()->route('login')->withErrors(['email' => 'Impossible de se connecter avec Google : ' . $e->getMessage()]);
+            return redirect()->route('login')->withErrors(['email' => 'Impossible de se connecter avec Google : '.$e->getMessage()]);
         }
     }
 }

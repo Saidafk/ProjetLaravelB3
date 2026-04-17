@@ -3,8 +3,8 @@
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\StripeController;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/stripe', [StripeController::class, 'index'])->name('stripe.index');
+    Route::post('/stripe/subscribe', [StripeController::class, 'subscribe'])->name('stripe.subscribe');
+    Route::delete('/stripe/unsubscribe', [StripeController::class, 'unsubscribe'])->name('stripe.unsubscribe');
 });
 
 Route::middleware([AdminMiddleware::class])->group(function () {

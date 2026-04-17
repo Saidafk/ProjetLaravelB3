@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Jobs\RecalculateLocationUpvotes;
 use App\Models\Film;
 use App\Models\Location;
-use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

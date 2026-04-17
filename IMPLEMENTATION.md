@@ -90,15 +90,17 @@ Mise en place d'un système de monétisation et d'une API sécurisée.
 
 - **Stripe (Paiement)** : 
     - Utilisation de **Laravel Cashier** avec le trait `Billable` sur le modèle `User`.
-    - Redirection vers **Stripe Checkout** pour éviter toute gestion de carte côté client (zéro JavaScript).
+    - Redirection vers **Stripe Checkout** pour éviter toute gestion de carte côté client.
     - **Controller** : `app/Http/Controllers/StripeController.php`.
+    - **Méthodes** : `subscribe()` (création session), `unsubscribe()` (annulation immédiate).
 - **API JWT** :
-    - Installation de `php-open-source-saver/jwt-auth`.
-    - Le modèle `User` implémente `JWTSubject`.
-    - Configuration du guard `api` en mode `jwt` dans `config/auth.php`.
+    - Authentification via `php-open-source-saver/jwt-auth`.
+    - **Login API** : Géré par `StripeController@login`, il retourne un jeton JWT si les identifiants sont corrects.
+    - **Configuration** : Le guard `api` est configuré sur le driver `jwt` dans `config/auth.php`.
 - **Protection des accès** :
     - **Middleware** : `app/Http/Middleware/CheckSubscription.php`.
-    - Ce middleware bloque toute requête API si l'utilisateur authentifié (via JWT) n'a pas d'abonnement actif.
+    - Ce middleware bloque toute requête si l'utilisateur n'est pas abonné (`subscribed('default')`).
 - **Routes API** : `routes/api.php`
-    - `/api/login` : Authentification et génération du token.
-    - `/api/films/{film}/locations` : Données réservées aux abonnés (inclut le décompte des upvotes).
+    - `POST /api/login` : Authentification.
+    - `GET /api/films/{film}/locations` : Données réservées aux abonnés. (Note: Assurez-vous d'appliquer le middleware `auth:api` et `CheckSubscription` dans les routes).
+

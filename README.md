@@ -15,7 +15,27 @@ CineMap est une application Laravel permettant de gérer des lieux de tournage a
 2. **Installer les dépendances** : `composer install` && `npm install`
 3. **Environnement** : `cp .env.example .env` && `php artisan key:generate`
 4. **Base de données** : `php artisan migrate:fresh --seed`
-5. **Lancer le serveur** : `composer run dev`
+5. **Configuration JWT** : `php artisan jwt:secret`
+6. **Lancer le serveur** : `composer run dev` (ou `php artisan serve` + `npm run dev`)
+
+---
+
+## 📖 Commandes Utiles
+
+### 🧹 Maintenance & Qualité
+- **Linter (Pint)** : `./vendor/bin/pint` (pour formater le code).
+- **Nettoyage manuel** : `php artisan app:prune-inactive-locations` (supprime les lieux inactifs).
+
+### 💳 Stripe (Test local)
+Pour que les paiements soient validés sur ton PC, tu dois lancer le listener Stripe :
+```powershell
+# Dans un terminal séparé
+.\stripe listen --forward-to http://127.0.0.1:8000/stripe/webhook
+```
+
+### 🔑 API JWT
+- **Login** : `POST /api/login` (email/password) -> retourne le `token`.
+- **Test** : Ajouter le header `Authorization: Bearer <ton_token>` dans Postman.
 
 ---
 

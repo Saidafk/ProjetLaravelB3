@@ -36,9 +36,8 @@ Gestion des droits d'accès via un middleware personnalisé.
 
 - **Migration** : `database/migrations/2026_04_16_000000_add_is_admin_to_users_table.php` (ajoute la colonne `is_admin`).
 - **Middleware** : `app/Http/Middleware/AdminMiddleware.php` (vérifie si l'utilisateur est admin, sinon renvoie une 403).
-- **Enregistrement** : Dans `bootstrap/app.php` sous l'alias `'admin'`.
 - **Routes protégées** : `routes/web.php` utilise le groupe `middleware(['admin'])` pour les actions de modification/suppression globales.
-- **Logique fine** : Dans `LocationController`, les méthodes `edit`, `update` et `destroy` vérifient manuellement si l'utilisateur possède l'objet OU est admin.
+- **Logique fine** : Dans `LocationController`, les méthodes `edit`, `update` et `destroy` vérifient manuellement si l'utilisateur possède le role OU est admin.
 
 ---
 
@@ -69,6 +68,8 @@ Standardisation du style de code.
 - **Outil** : `laravel/pint` (installé via Composer).
 - **Configuration** : `composer.json` contient le script de lancement.
 - **Application** : Tout le code a été formaté selon les standards PSR-12/Laravel.
+
+commande : php vendor/bin/pint
 
 ---
 
@@ -103,4 +104,24 @@ Mise en place d'un système de monétisation et d'une API sécurisée.
 - **Routes API** : `routes/api.php`
     - `POST /api/login` : Authentification.
     - `GET /api/films/{film}/locations` : Données réservées aux abonnés. (Note: Assurez-vous d'appliquer le middleware `auth:api` et `CheckSubscription` dans les routes).
+
+---
+
+## 🤖 Étape 9 : Serveur IA (Model Context Protocol)
+Implémentation d'une interface standardisée pour permettre à des agents IA (comme Claude Desktop ou Gemini) d'interagir avec la base de données.
+
+- **Architecture** : Utilisation du protocole MCP (Model Context Protocol).
+- **Transport** : Mode **stdio** (flux d'entrée/sortie standard) via une commande Artisan.
+- **Démarrage** : `php artisan mcp:start laravel`.
+- **Composants clés** :
+    - **Configuration** : `routes/ai.php` déclare le serveur local.
+    - **Serveur** : `app/Mcp/Servers/LaravelServer.php`.
+    - **Outils (Tools)** :
+        - `ListTables` : Récupère la liste de toutes les tables via `Schema::getTables()`.
+        - `DescribeTable` : Détaille les colonnes d'une table spécifique via `Schema::getColumnListing()`.
+        - `ExecuteQuery` : Permet l'exécution de requêtes SQL (Strictement limité aux requêtes `SELECT` par sécurité).
+- **Sécurité** :
+    - Le serveur est en **lecture seule**.
+    - Un validateur vérifie que chaque requête SQL commence par `SELECT` pour empêcher toute modification (`UPDATE`, `DELETE`, `DROP`).
+- **Configuration VS Code** : Un fichier `.vscode/mcp.json` est présent pour faciliter le test local via l'extension MCP.
 

@@ -1,7 +1,7 @@
 <?php
 
-use Laravel\Mcp\Facades\Mcp;
 use App\Mcp\Servers\LaravelServer;
+use Laravel\Mcp\Facades\Mcp;
 
 /*
 |--------------------------------------------------------------------------

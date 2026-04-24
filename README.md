@@ -1,70 +1,80 @@
-# CineMap - Gestion d'emplacements de tournage
+# CineMap - Documentation Technique (TP B3)
 
-CineMap est une application Laravel permettant de gérer des lieux de tournage associés à des films. Ce projet est réalisé dans le cadre d'un TP Laravel (B3).
+Ce projet est une application Laravel 11 intégrant les fonctionnalités requises pour le TP B3.
 
-## 🚀 Installation
+## 🛠 Installation et Configuration
 
-### Pré-requis
-- PHP 8.2+
-- Composer
-- Node.js & NPM
-- SQLite (ou autre base de données supportée par Laravel)
+```bash
+# 1. Installation des dépendances
+composer install
+npm install
 
-### Étapes d'installation
-1. **Cloner le projet**
-2. **Installer les dépendances** : `composer install` && `npm install`
-3. **Environnement** : `cp .env.example .env` && `php artisan key:generate`
-4. **Base de données** : `php artisan migrate:fresh --seed`
-5. **Configuration JWT** : `php artisan jwt:secret`
-6. **Lancer le serveur** : `composer run dev` (ou `php artisan serve` + `npm run dev`)
+# 2. Configuration environnement
+cp .env.example .env
+php artisan key:generate
+
+# 3. Base de données (Migrations + Seeders)
+php artisan migrate:fresh --seed
+
+# 4. Configuration Sécurité (JWT)
+php artisan jwt:secret
+
+# 5. Lancement des serveurs
+php artisan serve
+npm run dev
+```
 
 ---
 
-## 📖 Commandes Utiles
+## 🚀 Utilisation des fonctionnalités (9 Étapes)
 
-### 🧹 Maintenance & Qualité
-- **Linter (Pint)** : `./vendor/bin/pint` (pour formater le code).
-- **Nettoyage manuel** : `php artisan app:prune-inactive-locations` (supprime les lieux inactifs).
+### Étape 1 & 2 : Administration et Accès
+L'administration est protégée par un middleware. Les accès se gèrent via l'interface web.
+- **Accès Admin** : Se connecter avec un compte ayant `is_admin = 1`.
 
-### 💳 Stripe (Test local)
-Pour que les paiements soient validés sur ton PC, tu dois lancer le listener Stripe :
-```powershell
-# Dans un terminal séparé
+### Étape 3 : Maintenance des Lieux
+Commande pour supprimer les lieux de tournage marqués comme inactifs.
+```bash
+php artisan app:prune-inactive-locations
+```
+
+### Étape 4 : Traitement des Votes (Jobs)
+Les calculs de popularité sont délégués aux Workers.
+```bash
+php artisan queue:work
+```
+
+### Étape 5 : Paiements Stripe
+Pour tester les abonnements en local, lancer le listener Stripe :
+```bash
 .\stripe listen --forward-to http://127.0.0.1:8000/stripe/webhook
 ```
 
-### 🔑 API JWT
-- **Login** : `POST /api/login` (email/password) -> retourne le `token`.
-- **Test** : Ajouter le header `Authorization: Bearer <ton_token>` dans Postman.
+### Étape 6 : Qualité de Code (Linter)
+Formatage automatique du code selon les standards.
+```bash
+./vendor/bin/pint
+```
+
+### Étape 7 : Authentification Google
+Configuration requise dans le `.env` (`GOOGLE_CLIENT_ID` et `GOOGLE_CLIENT_SECRET`).
+
+### Étape 8 : API et Sécurité JWT
+Génération du token via `/api/login` puis utilisation pour les endpoints sécurisés.
+```bash
+# Exemple d'appel API
+curl -H "Authorization: Bearer <token>" http://127.0.0.1:8000/api/locations
+```
+
+### Étape 9 : Interface IA (Serveur MCP)
+Lancer le serveur pour permettre à une IA d'interroger la base de données.
+```bash
+php artisan mcp:start laravel
+```
 
 ---
 
-## 🛠 Fonctionnalités implémentées (Étapes 1 à 8)
-
-### ✅ Étape 1 à 5 : Socle, CRUDs, Admin, Jobs & Commandes
-- **Auth & CRUDs** : Système complet pour Films et Locations.
-- **Middleware Admin** : Protection des routes sensibles.
-- **Jobs** : Recalcul asynchrone des upvotes.
-- **Artisan** : Nettoyage automatique des lieux inactifs (`php artisan app:prune-inactive-locations`).
-
-### ✅ Étape 6 : Qualité de code (Laravel Pint)
-Le projet utilise **Laravel Pint** pour garantir un style de code propre et cohérent.
-
-### ✅ Étape 7 : Connexion via Google (Socialite)
-- **Social Auth** : Connexion rapide via Google Socialite.
-
-### ✅ Étape 8 : Abonnement Stripe & API JWT
-Seuls les utilisateurs Premium peuvent accéder aux données via l'API.
-- **Paiement** : Intégration de Stripe Checkout.
-- **Sécurité** : Authentification de l'API via tokens JWT.
-- **Accès** : Middleware dédié pour vérifier l'abonnement actif.
-
----
-
-## 📈 Roadmap (Dernière étape)
-- [ ] **Étape 9** : Serveur MCP pour intégration IA.
-
----
-
-## 📖 Documentation détaillée
-Consultez le fichier [IMPLEMENTATION.md](./IMPLEMENTATION.md) pour retrouver l'emplacement exact du code et les détails techniques de chaque étape.
+## 🧪 Tests
+```bash
+php artisan test
+```

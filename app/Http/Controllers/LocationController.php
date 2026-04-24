@@ -21,6 +21,11 @@ class LocationController extends Controller
         return view('location.index', compact('locations'));
     }
 
+    public function indexApi()
+    {
+        return response()->json(Location::all());
+    }
+
     public function create()
     {
         $films = Film::all();
